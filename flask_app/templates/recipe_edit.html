@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" 
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <title>Dashboard</title>
+</head>
+<body data-bs-theme="dark">
+
+    <div class="container mt-5">
+        <h1>Edit Recipe!</h1>
+        <a href="/recipes">Back to recipes</a>
+        <a href="/logout">Logout</a>
+
+        <form action="/recipes/{{ recipe.id }}/edit/process" method="POST">
+
+            <p>
+                <label for="name">Name:</label>
+                <input type="text" name="name" class="form-control" value="{{ recipe.name }}" />
+            </p>
+
+            <p>
+                <label for="description">Description:</label>
+                <textarea type="text" name="description" class="form-control">{{ recipe.description }}</textarea>
+            </p>
+
+            <p>
+                <label for="instructions">Instructions:</label>
+                <textarea type="text" name="instructions" class="form-control">{{ recipe.instructions }}</textarea>
+            </p>
+
+            <p>
+                <label for="date_made">Date Created:</label>
+                <input type="date" name="date_made" class="form-control" value='{{ recipe.date_made }}' />
+            </p>
+
+            <p>Under 30 minutes?
+                <input type="radio" id="1" name="under" value="1" {{'checked' if recipe.under == 1 }}/>
+                <label for="1">Yes</label>
+                <input type="radio" id="0" name="under" value="0" {{'checked' if recipe.under == 0 }}/>
+                <label for="0">No</label>
+            </p>
+            <input type="hidden" name="owner_id" value="{{ session.user_id }}">
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+        </form>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <p class="text-danger">{{message}}</p>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+
+
+
+
+    <script src="{{ url_for('static', filename='js/script.js') }}" ></script>
+    
+</body>
+</html>
